@@ -1,7 +1,7 @@
 launch:
-    # To launch a preconfigured pipeline from your workspace Launchpad
-    - name: "automated-sarek"
-      workspace: "SLAS2025/Demo"
-      pipeline: "nf-core-sarek"
-      compute-env: "SLAS2025/Demo/aws-compute-environment"
+  # To launch a preconfigured pipeline from your workspace Launchpad
+  - name: "automated-sarek"
+    workspace: "SLAS2025/Demo"
+    pipeline: "nf-core-sarek"
+    compute-env: "SLAS2025/Demo/aws-compute-environment"
 # TODO Launch a data studio
