@@ -4,10 +4,10 @@ participants:
     workspace: "SLAS2025/Demo"
     role: "ADMIN"
     overwrite: True
-  - name: "Community"
+  - name: "devrel"
     type: "TEAM"
     workspace: "SLAS2025/Demo"
-    role: "LAUNCH"
+    role: "ADMIN"
     overwrite: True
 
 teams:
