@@ -1,0 +1,25 @@
+participants:
+  - name: "SciDev"
+    type: "TEAM"
+    workspace: "SLAS2025/Demo"
+    role: "ADMIN"
+    overwrite: True
+  - name: "Community"
+    type: "TEAM"
+    workspace: "SLAS2025/Demo"
+    role: "LAUNCH"
+    overwrite: True
+
+teams:
+  - name: "SciDev"
+    organization: "SLAS2025"
+    description: "Scientific Development team"
+    members:
+      - "edmund.miller@seqera.io"
+    overwrite: True
+  - name: "Community"
+    organization: "SLAS2025"
+    description: "Community team"
+    members:
+      - "ken.brewer@seqera.io"
+    overwrite: True

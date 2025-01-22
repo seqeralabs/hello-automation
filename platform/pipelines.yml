@@ -1,0 +1,22 @@
+pipelines:
+  # To create a pipeline with options specified through YAML
+  - name: "nf-core-sarek"
+    url: "https://github.com/nf-core/sarek"
+    workspace: "SLAS2025/Demo"
+    description: "RNA sequencing analysis pipeline with gene/isoform counts and extensive quality control."
+    compute-env: "SLAS2025/Demo/aws-compute-environment"
+    profile: "test"
+    revision: "3.5.0"
+    # TODO Add params, config, pre-run
+    # params:
+    #   outdir: "s3://sci-dev-slas2025/nf-core-sarek/results"
+    # config: "path/to/nextflow.config"
+    # pre-run: "path/to/pipeline/pre_run.txt"
+    overwrite: True
+
+  # To create a pipeline from a JSON configuration file
+  - name: "nf-core-sarek"
+    workspace: "SLAS2025/Demo"
+    compute-env: "SLAS2025/Demo/aws-compute-environment"
+    file-path: "path/to/nf-core-sarek_pipeline.json"
+    overwrite: True
