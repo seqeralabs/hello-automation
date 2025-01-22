@@ -1,22 +1,23 @@
 compute-envs:
-  # To create a compute environment with options specified through YAML (AWS Example)
-  - type: aws-batch
-    config-mode: forge  for AWS and Azure
-    name: "your-aws-compute-environment"
-    workspace: "SLAS2025/Demo"
-    credentials: "scidev-playground"
-    region: "us-west-1"
-    work-dir: "s3://sci-dev-slas2025-work"
-    provisioning-model: "SPOT" # TODO Change to ON_DEMAND
-    fusion-v2: True
-    wave: True
-    fargate: True
-    fast-storage: True
-    instance-types: "c6i,r6i,m6i"
-    no-ebs-auto-scale: True
-    max-cpus: 500
-    labels: "owner=edmund,project=slas2025"
-    allow-buckets: "s3://sci-dev-slas2025-input,s3://sci-dev-slas2025"
-    wait: "AVAILABLE"
-    overwrite: False
-    file-path: "./compute-envs/your_aws_compute_environment.json"
+    # To create a compute environment with options specified through YAML (AWS Example)
+    - type: aws-batch
+      config-mode: forge
+      name: "human-driven-bioinformatics"
+      workspace: "SLAS2025/Demo"
+      credentials: "scidev-playground"
+      region: "eu-west-2"
+      work-dir: "s3://scidev-playground-eu-west-2/scratch"
+      provisioning-model: "SPOT" # TODO Change to ON_DEMAND
+      fusion-v2: True
+      wave: True
+      fargate: False
+      fast-storage: False
+      instance-types: "c6i,r6i,m6i"
+      no-ebs-auto-scale: True
+      max-cpus: 50
+      labels: "owner=edmund,project=slas2025"
+      # TODO
+      allow-buckets: "s3://scidev-playground-eu-west-2"
+      wait: "AVAILABLE"
+      overwrite: False
+      # file-path: "./compute-envs/your_aws_compute_environment.json"
