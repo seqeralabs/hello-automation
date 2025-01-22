@@ -17,7 +17,7 @@ teams:
     members:
       - "edmund.miller@seqera.io"
     overwrite: True
-  - name: "Community"
+  - name: "devrel"
     organization: "SLAS2025"
     description: "Community team"
     members:
