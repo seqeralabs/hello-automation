@@ -1,0 +1,21 @@
+[project]
+name = "slas2025"
+version = "0.1.0"
+description = "An example of event-driven bioinformatics workflows using Temporal, Nextflow and Seqera Platform"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.36.4",
+    "httpx>=0.28.1",
+    "httpx-auth>=0.23.1",
+    "pydantic-settings>=2.7.1",
+    "temporalio>=1.9.0",
+]
+
+[tool.mypy]
+plugins = ['pydantic.mypy']
+
+[dependency-groups]
+dev = [
+    "types-boto3>=1.36.4",
+]
