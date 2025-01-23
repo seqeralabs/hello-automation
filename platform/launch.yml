@@ -4,5 +4,5 @@ launch:
     workspace: "SLAS2025/Demo"
     pipeline: "nf-core-sarek"
     params:
-      outdir: "s3://scidev-playground-eu-west-2/edmund/slas2025/test"
+      outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/test/results"
 # TODO Launch a data studio

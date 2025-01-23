@@ -17,7 +17,7 @@ compute-envs:
       max-cpus: 50
       labels: "owner=edmund,project=slas2025"
       # TODO
-      allow-buckets: "s3://scidev-playground-eu-west-2"
+      allow-buckets: "s3://scidev-playground-eu-west-2, s3://$DESTINATION_BUCKET"
       wait: "AVAILABLE"
       overwrite: False
       # file-path: "./compute-envs/your_aws_compute_environment.json"

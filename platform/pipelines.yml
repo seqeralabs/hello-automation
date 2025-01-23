@@ -8,8 +8,9 @@ pipelines:
       profile: "test"
       revision: "3.5.0"
       # TODO Add params, config, pre-run
-      # params:
-      #   outdir: "s3://sci-dev-slas2025/nf-core-sarek/results"
+      params:
+        outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/"
       # config: "path/to/nextflow.config"
       # pre-run: "path/to/pipeline/pre_run.txt"
       overwrite: True
+
