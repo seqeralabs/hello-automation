@@ -103,8 +103,7 @@ class SeqeraActivities:
             base_url=str(settings.seqera_api_endpoint),
             auth=HeaderApiKey(
                 api_key=settings.seqera_token.get_secret_value(),
-                header_name="Authorization",
-                header_value=lambda api_key: f"Bearer {api_key}"
+                header_name="Authorization"
             )
         )
 
