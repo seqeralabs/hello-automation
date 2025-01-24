@@ -3,7 +3,6 @@ import boto3
 import httpx
 from temporalio import activity
 from pathlib import Path
-from httpx_auth import HeaderApiKey
 from config import settings
 
 class FileProcessingActivities:
@@ -99,19 +98,21 @@ class FileProcessingActivities:
 class SeqeraActivities:
     def __init__(self):
         # Create an httpx client configured with httpx-auth authentication
-        self.client = httpx.Client(
+        self.client = httpx.AsyncClient(
             base_url=str(settings.seqera_api_endpoint),
-            auth=HeaderApiKey(
-                api_key=settings.seqera_token.get_secret_value(),
-                header_name="Authorization"
-            )
+            headers={"Authorization": f"Bearer {settings.seqera_token.get_secret_value()}"},
+            timeout=30.0
         )
 
     @activity.defn
     async def trigger_workflow(self, samplesheet_path: str) -> str:
         """Triggers the workflow for a given run ID"""
-        response = self.client.post(
-            f"/workspaces/{settings.seqera_workspace_id}/actions/{settings.seqera_action_id}/launch",
+        # curl -H "Content-Type: application/json" \
+        #      -H "Authorization: Bearer <YOUR TOKEN>" \
+        #      https://api.cloud.seqera.io/actions/uGahsbPWNOTipp3B6uay8/launch?workspaceId=122097989272938 \
+        #      --data '{"params":{"foo":"Hello world"}}'
+        response = await self.client.post(
+            f"/actions/{settings.seqera_action_id}/launch?workspaceId={settings.seqera_workspace_id}",
             json={"params": {"input": samplesheet_path}}
         )
         response.raise_for_status()
