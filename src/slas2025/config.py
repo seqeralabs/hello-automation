@@ -27,6 +27,27 @@ class Settings(BaseSettings):
         alias="TOWER_WORKSPACE_ID"
     )
     seqera_action_id: str
+
+    # Studio settings
+    data_studio_tool_url: HttpUrl = Field(
+        default=HttpUrl("https://studio.cloud.seqera.io"),
+        description="URL for the data studio tool"
+    )
+    compute_env_id: str = Field(
+        description="ID of the compute environment to use for the studio"
+    )
+    studio_cpu: int = Field(
+        default=2,
+        description="Number of CPUs to allocate for the studio"
+    )
+    studio_memory: int = Field(
+        default=8,
+        description="Amount of memory in GB to allocate for the studio"
+    )
+    studio_conda_env: str = Field(
+        default="base",
+        description="Conda environment to use for the studio"
+    )
     
     model_config = SettingsConfigDict(
         env_file=".env",
