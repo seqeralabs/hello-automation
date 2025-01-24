@@ -118,9 +118,9 @@ class SeqeraActivities:
         response.raise_for_status()
         return response.json()["workflowId"]
 
-    @activity.defn(schedule_to_close_timeout="1 hour")
-    async def monitor_workflow_progress(self, workflow_id: str) -> None:
-        """Monitors workflow progress by pinging the progress endpoint every 30 seconds"""
+    @activity.defn
+    async def monitor_workflow_progress(self, workflow_id: str) -> str:
+        """Monitors workflow progress by pinging the progress endpoint every 30 seconds until completion"""
         while True:
             try:
                 response = await self.client.get(
@@ -128,11 +128,47 @@ class SeqeraActivities:
                 )
                 response.raise_for_status()
                 
-                # Log the progress response
-                activity.logger.info(f"Workflow progress: {response.json()}")
+                progress_data = response.json()
+                activity.logger.info(f"Workflow progress: {progress_data}")
+                
+                # Check if workflow is complete
+                if progress_data.get("status") in ["COMPLETED", "FAILED", "ERROR"]:
+                    return progress_data["status"]
                 
                 # Wait for 30 seconds before next check
                 await asyncio.sleep(30)
             except Exception as e:
                 activity.logger.error(f"Error monitoring workflow progress: {str(e)}")
                 raise
+
+    @activity.defn
+    async def process_workflow_completion(self, workflow_id: str, status: str) -> None:
+        """Create a studio after workflow completion"""
+        try:
+            if status != "COMPLETED":
+                activity.logger.warning(f"Workflow {workflow_id} completed with status {status}, skipping studio creation")
+                return
+
+            # Create a studio
+            response = await self.client.post(
+                "/studios",
+                json={
+                    "name": f"Analysis Studio - {workflow_id}",
+                    "description": f"Analysis studio for workflow {workflow_id}",
+                    "dataStudioToolUrl": settings.data_studio_tool_url,
+                    "computeEnvId": settings.compute_env_id,
+                    "initialCheckpointId": 0,
+                    "configuration": {
+                        "gpu": 0,
+                        "cpu": settings.studio_cpu,
+                        "memory": settings.studio_memory,
+                        "mountData": [workflow_id],
+                        "condaEnvironment": settings.studio_conda_env
+                    }
+                }
+            )
+            response.raise_for_status()
+            activity.logger.info(f"Studio created for workflow {workflow_id}: {response.json()}")
+        except Exception as e:
+            activity.logger.error(f"Error creating studio for workflow {workflow_id}: {str(e)}")
+            raise

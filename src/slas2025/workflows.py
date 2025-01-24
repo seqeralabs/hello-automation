@@ -56,16 +56,25 @@ class GenomeSequenceWorkflow:
                 retry_policy=retry_policy,
             )
 
-            # Monitor the workflow progress
+            # Monitor the workflow progress until completion
             try:
-                await workflow.execute_activity_method(
+                status = await workflow.execute_activity_method(
                     SeqeraActivities.monitor_workflow_progress,
                     seqera_run_id,
                     start_to_close_timeout=timedelta(hours=1),
                     retry_policy=retry_policy,
                 )
+                
+                # Process the workflow completion
+                await workflow.execute_activity_method(
+                    SeqeraActivities.process_workflow_completion,
+                    seqera_run_id,
+                    status,
+                    start_to_close_timeout=timedelta(seconds=120),
+                    retry_policy=retry_policy,
+                )
             except Exception as e:
-                workflow.logger.error(f"Error monitoring workflow {seqera_run_id}: {str(e)}")
-                # Continue processing other runs even if monitoring fails
+                workflow.logger.error(f"Error handling workflow {seqera_run_id}: {str(e)}")
+                # Continue processing other runs even if this one fails
 
         return "Workflow completed"
