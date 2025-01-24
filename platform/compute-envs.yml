@@ -19,5 +19,5 @@ compute-envs:
       # TODO
       allow-buckets: "s3://scidev-playground-eu-west-2,s3://$DESTINATION_BUCKET"
       wait: "AVAILABLE"
-      overwrite: False
+      overwrite: True
       # file-path: "./compute-envs/your_aws_compute_environment.json"

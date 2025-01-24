@@ -16,6 +16,7 @@ teams:
     description: "Scientific Development team"
     members:
       - "edmund.miller@seqera.io"
+      - "friederike.hanssen@seqera.io"
     overwrite: True
   - name: "devrel"
     organization: "SLAS2025"

@@ -4,4 +4,4 @@ organizations:
     description: "SLAS2025 International Conference and Exhibition"
     location: "San Diego, CA"
     website: "https://www.slas.org/events-calendar/slas2025-international-conference-exhibition/"
-    overwrite: True
+    overwrite: False
