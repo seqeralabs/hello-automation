@@ -117,3 +117,22 @@ class SeqeraActivities:
         )
         response.raise_for_status()
         return response.json()["workflowId"]
+
+    @activity.defn(schedule_to_close_timeout="1 hour")
+    async def monitor_workflow_progress(self, workflow_id: str) -> None:
+        """Monitors workflow progress by pinging the progress endpoint every 30 seconds"""
+        while True:
+            try:
+                response = await self.client.get(
+                    f"/workflow/{workflow_id}/progress?workspaceId={settings.seqera_workspace_id}"
+                )
+                response.raise_for_status()
+                
+                # Log the progress response
+                activity.logger.info(f"Workflow progress: {response.json()}")
+                
+                # Wait for 30 seconds before next check
+                await asyncio.sleep(30)
+            except Exception as e:
+                activity.logger.error(f"Error monitoring workflow progress: {str(e)}")
+                raise
