@@ -7,10 +7,10 @@ compute-envs:
       credentials: "scidev-playground"
       region: "eu-west-2"
       work-dir: "s3://scidev-playground-eu-west-2/scratch"
-      provisioning-model: "SPOT" # TODO Change to ON_DEMAND
+      provisioning-model: "SPOT" # NOTE Required with fargate
       fusion-v2: True
       wave: True
-      fargate: False
+      fargate: True
       fast-storage: False
       instance-types: "c6i,r6i,m6i"
       no-ebs-auto-scale: True
