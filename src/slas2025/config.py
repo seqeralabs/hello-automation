@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     """Configuration settings for SLAS 2025 application"""
 
     # Temporal settings
-    temporal_server_url: HttpUrl = HttpUrl("http://localhost:7233")
+    temporal_server_url: str = "localhost:7233"
     temporal_namespace: str = "default"
     
     # File processing settings
