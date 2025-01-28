@@ -4,7 +4,7 @@ import traceback
 from temporalio.client import Client, WorkflowFailureError
 
 from shared import SEQUENCER_TASK_QUEUE_NAME
-from workflows import MonitorSequencerDirectory
+from workflows import MonitorSequencerDirectory, GenomeSequenceWorkflow
 
 from config import settings
 
@@ -26,4 +26,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
+    print("Starting workflow")
     asyncio.run(main())

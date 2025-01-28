@@ -27,11 +27,18 @@ class MonitorSequencerDirectory:
             if run_list:
                 # For each run found, start a new GenomeSequenceWorkflow
                 for run_id in run_list:
-                    await workflow.start_child_workflow(
-                        GenomeSequenceWorkflow.run,
-                        run_id,
-                        id=f"genome-sequence-{run_id}",
-                    )
+                    try:
+                        await workflow.start_child_workflow(
+                            GenomeSequenceWorkflow.run,
+                            run_id,
+                            id=f"genome-sequence-{run_id}",
+                            parent_close_policy=workflow.ParentClosePolicy.ABANDON,
+                        )
+                        workflow.logger.info(f"Started child workflow for run_id: {run_id}")
+                    except Exception as e:
+                        workflow.logger.error(f"Failed to start child workflow for run_id {run_id}: {str(e)}")
+                        # Continue with next run_id even if this one failed
+                        continue
             
             workflow.logger.info("Checking again in 10 seconds")
             await workflow.sleep(10)  # Sleep for 10 seconds before checking again
@@ -50,7 +57,7 @@ class GenomeSequenceWorkflow:
         _ = await workflow.execute_activity_method(
             FileProcessingActivities.download_csv,
             run_id,
-            start_to_close_timeout=timedelta(seconds=5),
+            start_to_close_timeout=timedelta(seconds=30),
             retry_policy=retry_policy,
         )
 
@@ -66,7 +73,7 @@ class GenomeSequenceWorkflow:
         seqera_run_id: str = await workflow.execute_activity_method(
             SeqeraActivities.trigger_workflow,
             samplesheet_path,
-            start_to_close_timeout=timedelta(seconds=120),
+            start_to_close_timeout=timedelta(seconds=180),
             retry_policy=retry_policy,
         )
 
