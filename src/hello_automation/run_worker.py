@@ -23,8 +23,8 @@ async def main() -> None:
         workflows=[MonitorSequencerDirectory,GenomeSequenceWorkflow],
         activities=[
             monitoring_activities.check_unprocessed_files,
-            file_processing_activities.download_csv,
-            file_processing_activities.upload_to_s3,
+            file_processing_activities.fetch_metadata,
+            file_processing_activities.upload_data_to_s3,
             seqera_activities.trigger_workflow,
             seqera_activities.monitor_workflow_progress,
             seqera_activities.process_workflow_completion,

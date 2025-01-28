@@ -39,7 +39,7 @@ class MonitorSequencerDirectory:
                         workflow.logger.error(f"Failed to start child workflow for run_id {run_id}: {str(e)}")
                         # Continue with next run_id even if this one failed
                         continue
-            
+
             workflow.logger.info("Checking again in 10 seconds")
             await workflow.sleep(10)  # Sleep for 10 seconds before checking again
 
@@ -55,7 +55,7 @@ class GenomeSequenceWorkflow:
 
         # Download the metadata CSV files
         _ = await workflow.execute_activity_method(
-            FileProcessingActivities.download_csv,
+            FileProcessingActivities.fetch_metadata,
             run_id,
             start_to_close_timeout=timedelta(seconds=30),
             retry_policy=retry_policy,
@@ -63,7 +63,7 @@ class GenomeSequenceWorkflow:
 
         # Upload the files to S3
         samplesheet_path: str = await workflow.execute_activity_method(
-            FileProcessingActivities.upload_to_s3,
+            FileProcessingActivities.upload_data_to_s3,
             run_id,
             start_to_close_timeout=timedelta(seconds=120),
             retry_policy=retry_policy,
@@ -85,7 +85,7 @@ class GenomeSequenceWorkflow:
                 start_to_close_timeout=timedelta(hours=1),
                 retry_policy=retry_policy,
             )
-            
+
             # Process the workflow completion
             await workflow.execute_activity_method(
                 SeqeraActivities.process_workflow_completion,

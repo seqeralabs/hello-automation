@@ -18,16 +18,10 @@ This is a simple example of event-driven bioinformatics workflows using Temporal
 Customize then deploy the resources in the `platform` directory:
 
 ```bash
-seqerakit platform/org.yml
+seqerakit platform/*.yml
 ```
 
-Repeat for the files in the `platform/action.yml` directory in the order:
-
-- `workspaces.yml`
-- `credentials.yml`
-- `compute-environments.yml`
-- `pipelines.yml`
-- `actions.yml`
+The necessary environment variables will be set in the `platform/.envrc` file.
 
 ### Run the temporal automation
 

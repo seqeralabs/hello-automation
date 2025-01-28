@@ -19,7 +19,7 @@ class MonitoringActivities:
                         continue
                     else:
                         break
-                # Create a ".processed" marker file 
+                # Create a ".processed" marker file
                 processed_marker = Path(settings.sequencer_monitor_path) / f"{run_id}.processed"
                 processed_marker.touch()
                 run_list.append(run_id)
@@ -32,14 +32,14 @@ class MonitoringActivities:
 class FileProcessingActivities:
     def __init__(self):
         self.s3_client = boto3.client('s3')
-        
+
     @activity.defn
-    async def download_csv(self, run_id: str) -> str:
+    async def fetch_metadata(self, run_id: str) -> str:
         """Downloads the corresponding CSV file from URL"""
         try:
             csv_url = f"{settings.metadata_download_url}/{run_id}.csv"
             local_path = f"{settings.sequencer_monitor_path}/{run_id}.csv"
-            
+
             # Check if the file has already been downloaded
             if Path(local_path).exists():
                 return run_id
@@ -48,18 +48,18 @@ class FileProcessingActivities:
             async with httpx.AsyncClient() as client:
                 async with client.stream('GET', csv_url) as response:
                     response.raise_for_status()
-                    
+
                     with open(local_path, 'wb') as f:
                         async for chunk in response.aiter_bytes():
                             f.write(chunk)
-            
+
             return run_id
         except Exception:
             activity.logger.exception("CSV download failed")
             raise
 
     @activity.defn
-    async def upload_to_s3(self, run_id: str) -> str:
+    async def upload_data_to_s3(self, run_id: str) -> str:
         """Uploads files to S3 and creates marker files"""
         try:
             # Check if the file has already been uploaded
@@ -128,14 +128,14 @@ class SeqeraActivities:
                     f"/workflow/{workflow_id}/progress?workspaceId={settings.seqera_workspace_id}"
                 )
                 response.raise_for_status()
-                
+
                 progress_data = response.json()
                 activity.logger.info(f"Workflow progress: {progress_data}")
-                
+
                 # Check if workflow is complete
                 if progress_data.get("status") in ["COMPLETED", "FAILED", "ERROR"]:
                     return progress_data["status"]
-                
+
                 # Wait for 30 seconds before next check
                 await asyncio.sleep(30)
             except Exception as e:
