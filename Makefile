@@ -13,11 +13,14 @@ sequencer/fastq_single_1.fastq.gz:
 sequencer/fastq_single_2.fastq.gz:
 	wget -O $@ https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz
 
+run-temporal:
+	temporal server start-dev
+
 run-worker:
-	uv run src/slas2025/run_worker.py
+	uv run src/hello_automation/run_worker.py
 
 run-workflow:
-	uv run src/slas2025/run_workflow.py
+	uv run src/hello_automation/run_workflow.py
 
 clean:
 	rm -rf sequencer/*

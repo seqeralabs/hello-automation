@@ -1,5 +1,5 @@
 [project]
-name = "slas2025"
+name = "hello-automation"
 version = "0.1.0"
 description = "An example of event-driven bioinformatics workflows using Temporal, Nextflow and Seqera Platform"
 readme = "README.md"
@@ -8,6 +8,7 @@ dependencies = [
     "boto3>=1.36.4",
     "httpx>=0.28.1",
     "pydantic-settings>=2.7.1",
+    "seqerakit>=0.5.2",
     "temporalio>=1.9.0",
 ]
 
