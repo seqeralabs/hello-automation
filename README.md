@@ -7,7 +7,7 @@ This is a simple example of event-driven bioinformatics workflows using Temporal
 - [Temporal](https://learn.temporal.io/getting_started/python/dev_environment/#set-up-a-local-temporal-service-for-development-with-temporal-cli)
 - [uv](https://docs.astral.sh/uv/)
 - [seqerakit](https://github.com/seqeralabs/seqera-kit)
-- [Seqera Platform CLI](https://github.com/seqeralabs/tower-cli#1-installation))
+- [Seqera Platform CLI](https://github.com/seqeralabs/tower-cli#1-installation)
 
 ## Usage
 
