@@ -4,7 +4,7 @@ import traceback
 from temporalio.client import Client, WorkflowFailureError
 
 from shared import SEQUENCER_TASK_QUEUE_NAME
-from workflows import GenomeSequenceWorkflow
+from workflows import MonitorSequencerDirectory
 
 from config import settings
 
@@ -14,14 +14,12 @@ async def main() -> None:
     client: Client = await Client.connect(str(settings.temporal_server_url), namespace=settings.temporal_namespace)
 
     try:
-        result = await client.execute_workflow(
-            GenomeSequenceWorkflow.run,
+        await client.execute_workflow(
+            MonitorSequencerDirectory.run,
             str(settings.sequencer_monitor_path),
-            id="genome-sequence-workflow",
+            id="monitor-sequencer-directory",
             task_queue=SEQUENCER_TASK_QUEUE_NAME,
         )
-
-        print(f"Result: {result}")
 
     except WorkflowFailureError:
         print("Got expected exception: ", traceback.format_exc())

@@ -5,10 +5,7 @@ from temporalio import activity
 from pathlib import Path
 from config import settings
 
-class FileProcessingActivities:
-    def __init__(self):
-        self.s3_client = boto3.client('s3')
-        
+class MonitoringActivities:
     @activity.defn
     async def check_unprocessed_files(self) -> list[str] | None:
         """For each *.done file check if all files with settings.data_suffix exist"""
@@ -32,6 +29,10 @@ class FileProcessingActivities:
             activity.logger.exception("File monitoring failed")
             raise
 
+class FileProcessingActivities:
+    def __init__(self):
+        self.s3_client = boto3.client('s3')
+        
     @activity.defn
     async def download_csv(self, run_id: str) -> str:
         """Downloads the corresponding CSV file from URL"""
@@ -58,7 +59,7 @@ class FileProcessingActivities:
             raise
 
     @activity.defn
-    async def upload_to_s3(self, run_id: str) -> str | None:
+    async def upload_to_s3(self, run_id: str) -> str:
         """Uploads files to S3 and creates marker files"""
         try:
             # Check if the file has already been uploaded
