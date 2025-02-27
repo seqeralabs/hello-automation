@@ -1,7 +1,7 @@
 launch:
   # To launch a preconfigured pipeline from your workspace Launchpad
   - name: "test-sarek"
-    workspace: "SLAS2025/Demo"
+    workspace: "hello-automation/Demo"
     pipeline: "nf-core-sarek"
     params:
       outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/test/results"

@@ -1,7 +1,7 @@
 workspaces:
   - name: "Demo"
     full-name: "Demonstration"
-    organization: "SLAS2025"
+    organization: "hello-automation"
     description: "For demonstrating event driven bioinformatics"
     visibility: "SHARED"
-    overwrite: True
+    overwrite: False

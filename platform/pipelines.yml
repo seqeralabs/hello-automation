@@ -2,8 +2,8 @@ pipelines:
     # To create a pipeline with options specified through YAML
     - name: "nf-core-sarek"
       url: "https://github.com/nf-core/sarek"
-      workspace: "SLAS2025/Demo"
-      description: "RNA sequencing analysis pipeline with gene/isoform counts and extensive quality control."
+      workspace: "hello-automation/Demo"
+      description: "Sarek is a pipeline for variant calling and annotation of NGS data."
       compute-env: "human-driven-bioinformatics"
       profile: "test"
       revision: "3.5.0"
@@ -12,5 +12,5 @@ pipelines:
         outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/"
       # config: "path/to/nextflow.config"
       # pre-run: "path/to/pipeline/pre_run.txt"
-      overwrite: True
+      overwrite: False
 

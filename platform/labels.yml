@@ -1,9 +1,9 @@
 labels:
   - name: "source"
     value: "automation"
-    workspace: "SLAS2025/Demo" # required
+    workspace: "hello-automation/Demo" # required
     overwrite: True
-  - name: "source"
-    value: "launchpad"
-    workspace: "SLAS2025/Demo" # required
-    overwrite: True
+  # - name: "source"
+  #   value: "launchpad"
+  #   workspace: "hello-automation/Demo" # required
+  #   overwrite: True
