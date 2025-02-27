@@ -3,7 +3,7 @@ compute-envs:
     - type: aws-batch
       config-mode: forge
       name: "human-driven-bioinformatics"
-      workspace: "SLAS2025/Demo"
+      workspace: "hello-automation/Demo"
       credentials: "scidev-playground"
       region: "eu-west-2"
       work-dir: "s3://scidev-playground-eu-west-2/scratch"
@@ -11,13 +11,13 @@ compute-envs:
       fusion-v2: True
       wave: True
       fargate: True
-      fast-storage: False
+      fast-storage: True
       instance-types: "c6i,r6i,m6i"
       no-ebs-auto-scale: True
       max-cpus: 50
-      labels: "owner=edmund,project=slas2025"
+      labels: "owner=edmund,project=hello-automation"
       # TODO
       allow-buckets: "s3://scidev-playground-eu-west-2,s3://$DESTINATION_BUCKET"
       wait: "AVAILABLE"
-      overwrite: True
+      overwrite: False
       # file-path: "./compute-envs/your_aws_compute_environment.json"

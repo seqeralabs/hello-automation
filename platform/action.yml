@@ -1,8 +1,8 @@
 actions:
   - type: 'tower'                                         # required
-    name: 'slas2025'                             # required
+    name: 'sarek-action'                             # required
     pipeline: 'https://github.com/nf-core/sarek'    # required
-    workspace: 'SLAS2025/Demo'            # required
+    workspace: 'hello-automation/Demo'            # required
     compute-env: 'human-driven-bioinformatics'           # required
     # work-dir: 's3://your-bucket'                          # required
     revision: '3.5.0'                                      # required

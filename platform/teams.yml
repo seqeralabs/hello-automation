@@ -1,25 +1,25 @@
 participants:
   - name: "SciDev"
     type: "TEAM"
-    workspace: "SLAS2025/Demo"
+    workspace: "hello-automation/Demo"
     role: "ADMIN"
     overwrite: True
   - name: "devrel"
     type: "TEAM"
-    workspace: "SLAS2025/Demo"
+    workspace: "hello-automation/Demo"
     role: "ADMIN"
     overwrite: True
 
 teams:
   - name: "SciDev"
-    organization: "SLAS2025"
+    organization: "hello-automation"
     description: "Scientific Development team"
     members:
       - "edmund.miller@seqera.io"
       - "friederike.hanssen@seqera.io"
     overwrite: True
   - name: "devrel"
-    organization: "SLAS2025"
+    organization: "hello-automation"
     description: "Community team"
     members:
       - "ken.brewer@seqera.io"
