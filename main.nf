@@ -22,7 +22,7 @@ params.sarek_action_endpoint = null   // full Seqera action launch URL for Sarek
 params.seqera_access_token   = System.getenv('TOWER_ACCESS_TOKEN')
 
 process CREATE_SAMPLESHEET {
-    container 'curlimages/curl:8.12.1'
+    container 'python:3.12-slim'
     publishDir "${params.outdir}/${params.run_id}", mode: 'copy'
 
     input:
@@ -35,18 +35,37 @@ process CREATE_SAMPLESHEET {
     def csv_url    = "${params.metadata_url}/${run_id}.csv"
     def input_base = params.input_base
     """
-    curl -fsSL -o metadata.csv '${csv_url}'
+    python - <<'PY'
+    import csv
+    import urllib.request
 
-    head -1 metadata.csv > samplesheet.csv
+    csv_url = "${csv_url}"
+    input_base = "${input_base}"
+    run_id = "${run_id}"
 
-    tail -n +2 metadata.csv | while IFS=, read -r patient sex status sample lane _fq1 _fq2; do
-        echo "\${patient},\${sex},\${status},\${sample},\${lane},${input_base}/${run_id}_1.fastq.gz,${input_base}/${run_id}_2.fastq.gz" >> samplesheet.csv
-    done
+    with urllib.request.urlopen(csv_url) as response:
+        rows = list(csv.DictReader(line.decode() for line in response.readlines()))
+
+    fieldnames = ["patient", "sex", "status", "sample", "lane", "fastq_1", "fastq_2"]
+    with open("samplesheet.csv", "w", newline="") as fh:
+        writer = csv.DictWriter(fh, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow({
+                "patient": row["patient"],
+                "sex": row["sex"],
+                "status": row["status"],
+                "sample": row["sample"],
+                "lane": row["lane"],
+                "fastq_1": f"{input_base}/{run_id}_1.fastq.gz",
+                "fastq_2": f"{input_base}/{run_id}_2.fastq.gz",
+            })
+    PY
     """
 }
 
 process TRIGGER_SAREK_ACTION {
-    container 'curlimages/curl:8.12.1'
+    container 'python:3.12-slim'
     input:
     path samplesheet
 
@@ -58,11 +77,26 @@ process TRIGGER_SAREK_ACTION {
     def token = params.seqera_access_token
     def samplesheetPath = "${params.outdir}/${params.run_id}/samplesheet.csv"
     """
-    curl -fsSL -X POST \
-      -H "Authorization: Bearer ${token}" \
-      -H 'Content-Type: application/json' \
-      -d '{"params":{"input":"${samplesheetPath}"}}' \
-      '${endpoint}'
+    python - <<'PY'
+    import json
+    import urllib.request
+
+    endpoint = "${endpoint}"
+    token = "${token}"
+    payload = json.dumps({"params": {"input": "${samplesheetPath}"}}).encode()
+
+    req = urllib.request.Request(
+        endpoint,
+        data=payload,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urllib.request.urlopen(req) as response:
+        print(response.read().decode())
+    PY
     """
 }
 
