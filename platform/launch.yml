@@ -1,8 +1,12 @@
 launch:
-  # To launch a preconfigured pipeline from your workspace Launchpad
-  - name: "test-sarek"
+  # Launch create-samplesheet — it will call the Sarek action launch endpoint
+  # with the generated samplesheet path.
+  - name: "test-create-samplesheet"
     workspace: "hello-automation/Demo"
-    pipeline: "nf-core-sarek"
+    pipeline: "create-samplesheet"
     params:
-      outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/test/results"
-# TODO Launch a data studio
+      run_id: "fastq_single"
+      outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX"
+      metadata_url: "https://raw.githubusercontent.com/nf-core/sarek/refs/tags/3.5.0/tests/csv/3.0"
+      input_base: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX"
+      sarek_action_endpoint: "$SAREK_ACTION_ENDPOINT"

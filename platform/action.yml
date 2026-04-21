@@ -1,12 +1,28 @@
 actions:
-  - type: 'tower'                                         # required
-    name: 'sarek-action'                             # required
-    pipeline: 'https://github.com/nf-core/sarek'    # required
-    workspace: 'hello-automation/Demo'            # required
-    compute-env: 'human-driven-bioinformatics'           # required
-    # work-dir: 's3://your-bucket'                          # required
-    revision: '3.5.0'                                      # required
-    profile: 'test'                                       # optional
-    params:                                               # optional
+  # Launch create-samplesheet. It will call the Sarek action endpoint directly
+  # with the deterministic samplesheet path for this run.
+  - type: 'tower'
+    name: 'create-samplesheet-action'
+    pipeline: 'https://github.com/seqeralabs/hello-automation'
+    workspace: 'hello-automation/Demo'
+    compute-env: 'human-driven-bioinformatics'
+    revision: 'feat/nextflow-lambda-sarek-actions'
+    params:
+      outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX"
+      metadata_url: "https://raw.githubusercontent.com/nf-core/sarek/refs/tags/3.5.0/tests/csv/3.0"
+      input_base: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX"
+      sarek_action_endpoint: "$SAREK_ACTION_ENDPOINT"
+    overwrite: False
+
+  # Launch Sarek directly. The create-samplesheet pipeline posts to this action's
+  # launch endpoint with a run-specific `input` samplesheet path.
+  - type: 'tower'
+    name: 'sarek-action'
+    pipeline: 'https://github.com/nf-core/sarek'
+    workspace: 'hello-automation/Demo'
+    compute-env: 'human-driven-bioinformatics'
+    revision: '3.5.0'
+    profile: 'test'
+    params:
       outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/"
-    overwrite: False                                       # optional
+    overwrite: False

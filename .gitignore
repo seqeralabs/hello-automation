@@ -9,3 +9,8 @@ build
 htmlcov
 
 .env
+
+# Nextflow
+work/
+.nextflow/
+.nextflow.log*

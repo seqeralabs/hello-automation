@@ -1,16 +1,24 @@
 pipelines:
-    # To create a pipeline with options specified through YAML
+    - name: "create-samplesheet"
+      url: "https://github.com/seqeralabs/hello-automation"
+      workspace: "hello-automation/Demo"
+      description: "Create Sarek-compatible samplesheet from staged FASTQs and optionally trigger the Sarek action endpoint with that samplesheet."
+      compute-env: "human-driven-bioinformatics"
+      revision: "feat/nextflow-lambda-sarek-actions"
+      params:
+        outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX"
+        metadata_url: "https://raw.githubusercontent.com/nf-core/sarek/refs/tags/3.5.0/tests/csv/3.0"
+        input_base: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX"
+        sarek_action_endpoint: "$SAREK_ACTION_ENDPOINT"
+      overwrite: False
+
     - name: "nf-core-sarek"
       url: "https://github.com/nf-core/sarek"
       workspace: "hello-automation/Demo"
-      description: "Sarek is a pipeline for variant calling and annotation of NGS data."
+      description: "Sarek variant calling — invoked by the create-samplesheet pipeline through the action launch endpoint."
       compute-env: "human-driven-bioinformatics"
       profile: "test"
       revision: "3.5.0"
-      # TODO Add params, config, pre-run
       params:
         outdir: "s3://$DESTINATION_BUCKET/$DESTINATION_PREFIX/"
-      # config: "path/to/nextflow.config"
-      # pre-run: "path/to/pipeline/pre_run.txt"
       overwrite: False
-
