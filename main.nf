@@ -22,7 +22,7 @@ params.sarek_action_endpoint = null   // full Seqera action launch URL for Sarek
 params.seqera_access_token   = System.getenv('TOWER_ACCESS_TOKEN')
 
 process CREATE_SAMPLESHEET {
-    container 'python:3.12-slim'
+    container 'python:3.12'
     publishDir "${params.outdir}/${params.run_id}", mode: 'copy'
 
     input:
@@ -65,7 +65,7 @@ process CREATE_SAMPLESHEET {
 }
 
 process TRIGGER_SAREK_ACTION {
-    container 'python:3.12-slim'
+    container 'python:3.12'
     input:
     path samplesheet
 
